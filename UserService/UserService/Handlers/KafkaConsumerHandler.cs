@@ -29,9 +29,11 @@ namespace UserService.Handlers {
             _cluster.ConsumeFromEarliest(topic);
             _cluster.MessageReceived += record =>
             {
-                Console.WriteLine($"Received: {Encoding.UTF8.GetString(record.Value as byte[])}");
-                _logger.LogInformation($"Received: {Encoding.UTF8.GetString(record.Value as byte[])}");
+                var message = Encoding.UTF8.GetString(record.Value as byte[]);
+                Console.WriteLine($"Received: {message}");
+                _logger.LogInformation($"Received: {message}");
             };
+            
             return Task.CompletedTask;
 
         }

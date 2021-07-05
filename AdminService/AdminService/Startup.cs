@@ -1,4 +1,5 @@
 using AdminService.Handlers;
+using AdminService.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,7 +24,8 @@ namespace AdminService {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
-            services.AddSingleton<IHostedService, KafkaConsumerHandler>();
+            services.AddSingleton<IHostedService, AdminTopicConsumerHandler>();
+            services.AddSingleton<IAdminTopicManagement, AdminTopicManagement>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,13 +11,13 @@ using Kafka.Public.Loggers;
 using System.Text;
 
 namespace AdminService.Handlers {
-    public class KafkaConsumerHandler : IHostedService {
+    public class AdminTopicConsumerHandler : IHostedService {
 
         private readonly string topic = "AdminTopic";
-        private readonly ILogger<KafkaConsumerHandler> _logger;
+        private readonly ILogger<AdminTopicConsumerHandler> _logger;
         private ClusterClient _cluster;
 
-        public KafkaConsumerHandler(ILogger<KafkaConsumerHandler> logger) {
+        public AdminTopicConsumerHandler(ILogger<AdminTopicConsumerHandler> logger) {
             _logger = logger;
             _cluster = new ClusterClient(new Configuration()
             {
@@ -30,8 +30,9 @@ namespace AdminService.Handlers {
             _cluster.ConsumeFromEarliest(topic);
             _cluster.MessageReceived += record =>
             {
-                Console.WriteLine($"Received: {Encoding.UTF8.GetString(record.Value as byte[])}");
-                _logger.LogInformation($"Received: {Encoding.UTF8.GetString(record.Value as byte[])}");
+                var message = Encoding.UTF8.GetString(record.Value as byte[]);
+                Console.WriteLine($"Received: {message}");
+                _logger.LogInformation($"Received: {message}");
             };
             return Task.CompletedTask;
 
