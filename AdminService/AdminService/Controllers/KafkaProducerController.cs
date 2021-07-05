@@ -24,7 +24,7 @@ namespace AdminService.Controllers {
         [HttpPost(nameof(CreateUser))]
         public async Task<IActionResult> CreateUser([FromBody] User user) {
             string parsedUser = JsonConvert.SerializeObject(user);
-            var response = await _adminTopicManagement.SendToKafka(parsedUser);
+            var response = await _adminTopicManagement.SendToKafka("AddUser", parsedUser);
             return Created(string.Empty, response);
         }
     }

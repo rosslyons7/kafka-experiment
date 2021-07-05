@@ -29,9 +29,15 @@ namespace UserService.Handlers {
             _cluster.ConsumeFromEarliest(topic);
             _cluster.MessageReceived += record =>
             {
-                var message = Encoding.UTF8.GetString(record.Value as byte[]);
-                Console.WriteLine($"Received: {message}");
-                _logger.LogInformation($"Received: {message}");
+  
+                    var message = ToString(record.Value);
+                    var key = ToString(record.Key);
+                if (key.Equals("CreateUser")) {
+                    Console.WriteLine($"Received: {message}");
+                    _logger.LogInformation($"Received: {message}");
+                }
+                   
+                
             };
             
             return Task.CompletedTask;
@@ -42,6 +48,9 @@ namespace UserService.Handlers {
             _cluster?.Dispose();
             return Task.CompletedTask;
         }
+
+        private string ToString(object text) =>
+            Encoding.UTF8.GetString(text as byte[]);
 
     }
 }

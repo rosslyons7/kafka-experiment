@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 namespace AdminService.Services {
     public interface IAdminTopicManagement {
 
-        public Task<object> SendToKafka(string message);
+        public Task<object> SendToKafka(string key, string message);
     }
 }

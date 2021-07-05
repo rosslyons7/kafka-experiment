@@ -11,11 +11,11 @@ namespace AdminService.Services {
         { BootstrapServers = "localhost:9092" };
         private readonly string topic = "AdminTopic";
 
-        public async Task<object> SendToKafka(string message) {
+        public async Task<object> SendToKafka(string key, string message) {
              using (var producer =
-                 new ProducerBuilder<Null, string>(config).Build()) {
+                 new ProducerBuilder<string, string>(config).Build()) {
                try {
-                     return  producer.ProduceAsync(topic, new Message<Null, string> { Value = message })
+                    return producer.ProduceAsync(topic, new Message<string, string> { Key = key, Value = message })
                         .GetAwaiter()
                         .GetResult();
                 }
